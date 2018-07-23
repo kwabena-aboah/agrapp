@@ -1,0 +1,170 @@
+{% extends "agrapp/skeleton.html" %}
+
+{% load static %}
+{% load pages_tags %}
+{% load cache %}
+
+{% block head %}
+{{ block.super }}
+<meta name="application-name" content="{{ SITE_NAME }}"/>
+<meta name="copyright" content="{{ COPYRIGHT }}"/>
+<meta name="description" content="{{ page_description|default:SITE_DESCRIPTION }}"/>
+{% block og_meta %}
+<meta property="og:site_name" content="{{ SITE_NAME }}"/>
+<meta property="og:title" content="{{ page_title|default:SITE_TITLE }} | {{ SITE_NAME }}"/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="{% static 'agrapp/img/icon.png' %}"/>
+<meta property="og:description" content="{{ page_description|default:SITE_DESCRIPTION }}"/>
+<meta name="author" content="{{ SITE_NAME }}, {{ CONTACT_EMAIL }}"/>
+{% endblock %}
+<title>{{ page_title|default:SITE_TITLE }} | {{ SITE_NAME }}</title>
+<link rel="icon shortcut" href="{% static 'agrapp/img/logo-93x60.png' %}" type="image/png"/>
+
+{% block styles %}
+<link href="{% static 'agrapp/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'agrapp/css/material-icons.css' %}" rel="stylesheet">
+<link href="{% static 'agrapp/css/fontawesome-all.min.css' %}" rel="stylesheet">
+<link href="{% static 'agrapp/css/products.css' %}" rel="stylesheet">
+{% endblock %}
+{% endblock %}
+
+{% block body %}
+{{ block.super }}
+<header>
+	{% block header-content %}
+	<nav class="navbar navbar-expand-sm navbar-light bg-light justify-content-start">
+		<a href="{% url 'products_index' %}" class="navbar-brand d-none d-lg-block"><img class="mb-2" src="{% static 'agrapp/img/logo-93x60.png' %}" alt="agrapp logo" width="50" height="50"></a>
+		<button type="button" id="sidebar-collapse-button" class="d-lg-none btn btn-info mr-2">
+				<i class="fas fa-align-left mr-1"></i>
+				<span>Menu</span>
+		</button>
+		{% block header-menu %}
+		<ul class="navbar-nav  d-none d-lg-flex ml-auto">
+			{% block header-menu-list %}
+			<li class="nav-item ml-2 d-none d-lg-block">
+				<a class="btn btn-outline-dark border" href="#"><i class="fas fa-comment text-lightgrey mr-2"></i>Blog</a>
+			</li>
+			{% if user.is_authenticated %}
+			<li class="nav-item dropdown ml-1">
+				<button id="user-dropdown-menu" class="btn btn-light dropdown-toggle nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fas fa-bars"></i>
+						Hi! {{ user.get_username }}
+					</button>
+				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-dropdown-menu">
+					{% if user.is_staff %}
+						<a class="dropdown-item" href="/admin/">
+	 						<i class="fas fa-wrench text-lightgrey mr-3"></i>Admin
+	 				 	</a>
+						{% endif %}
+					<a class="dropdown-item" href="{% url 'accounts_change_password' %}">
+						 <i class="fas fa-key text-lightgrey mr-3"></i>Change password
+					 </a>
+					<a class="dropdown-item" href="{% url 'accounts_logout' %}">
+					   <i class="fas fa-sign-out-alt text-lightgrey mr-3"></i>Log Out
+					 </a>
+				</div>
+			</li>
+			{% else %}
+			<li class="nav-item ml-2 d-none d-lg-block">
+				<a class="btn btn-outline-dark border" href="{% url 'accounts_login' %}"><i class="fas fa-lock text-lightgrey mr-2"></i>Log In</a>
+			</li>
+			{% endif %}
+			{% endblock %}
+		</ul>
+		{% endblock %}
+	</nav>
+
+	<nav id="sidebar" class="bg-info text-light">
+			<div id="dismiss">
+					<i class="fas fa-arrow-circle-left"></i>
+			</div>
+
+			<div class="sidebar-header">
+				<a href=""{% url 'products_index' %}""><h3>{{ SITE_NAME }}</h3></a>
+			</div>
+			<ul class="list-unstyled">
+				{% block side-nav-content %}
+				{% if user.is_authenticated %}
+				<li>
+					<a href="{% url 'products_index' %}">Hi! {{ user.get_username }}</a>
+				</li>
+				{% if user.is_staff %}
+				<li>
+					<a href="/admin/">
+						<i class="fas fa-wrench mr-3"></i>Admin
+					</a>
+				</li>
+				{% endif %}
+				<li>
+					<a href="{% url 'accounts_logout' %}">
+						 <i class="fas fa-sign-out-alt mr-3"></i>Log Out
+					</a>
+				</li>
+				<li>
+					<a href="{% url 'accounts_change_password' %}">
+						<i class="fas fa-key mr-3"></i>Change password
+					</a>
+				</li>
+				{% else %}
+				<li>
+					<a href="{% url 'accounts_login' %}">
+						<i class="fas fa-lock mr-3"></i>Log In
+					</a>
+				</li>
+				<li>
+					<a href="{% url 'accounts_register' %}">
+						<i class="fas fa-user-plus mr-2"></i>Sign Up
+					</a>
+				</li>
+				{% endif %}
+				{% endblock %}
+			</ul>
+	</nav>
+	{% endblock %}
+</header>
+
+<main id="content" style="min-height: 50vh">
+	{% block content %}
+	{% endblock %}
+</main>
+<div class="sidebar-overlay"></div>
+{% block footer %}
+<footer class="mt-5 pt-4 my-md-5 pt-md-5 border-top container">
+	{% block footer-content %}
+	{% cache cache_timeout page-links %}
+  <div class="row">
+    <div class="col-12 col-md">
+      <img class="mb-2" src="{% static 'agrapp/img/logo-93x60.png' %}" alt="" width="50" height="50">
+      <small class="d-block mb-3 text-muted">{{ COPYRIGHT|safe }}</small>
+    </div>
+		{% get_pages_links %}
+		<div class="col-sm-12 text-muted small text-right">
+      Powered by <a href=""><span class="text-dark">agrapp</span></a>
+    </div>
+  </div>
+	{% endcache %}
+	{% endblock %}
+</footer>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'agrapp/scripts/jquery.min.js' %}"></script>
+<script src="{% static 'agrapp/scripts/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'agrapp/scripts/base.js' %}"></script>
+<script src="{% static 'agrapp/scripts/jquery-ajax.js' %}"></script>
+<script type="text/javascript">
+		$(document).ready(function () {
+				$('#dismiss, .sidebar-overlay').on('click', function () {
+						$('#sidebar').removeClass('active');
+						$('.sidebar-overlay').fadeOut();
+				});
+
+				$('#sidebar-collapse-button').on('click', function () {
+						$('#sidebar').addClass('active');
+						$('.sidebar-overlay').fadeIn();
+						$('.collapse.in').toggleClass('in');
+						$('a[aria-expanded=true]').attr('aria-expanded', 'false');
+				});
+		});
+</script>
+{% endblock %}
+{% endblock %}

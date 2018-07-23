@@ -1,0 +1,1 @@
+web: gunicorn agrapp.wsgi --log-file -

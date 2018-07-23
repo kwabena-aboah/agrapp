@@ -1,0 +1,16 @@
+{% extends products_template_name %}
+
+{% load cache %}
+
+{% block products-content %}
+<div>
+	{% with products=featured_products %}
+	{% include "products/parts/featured_list.html" %}
+	{% endwith %}
+</div>
+<div>
+	{% with products=recent_products %}
+	{% include "products/parts/product_list.html" %}
+	{% endwith %}
+</div>
+{% endblock %}

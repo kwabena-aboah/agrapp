@@ -1,0 +1,7 @@
+{% extends products_template_name %}
+
+
+{% block products-content %}
+<h3>{{ manufacturer.name }}</h3>
+{% include "products/parts/product_list.html" %}
+{% endblock %}
