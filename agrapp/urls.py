@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^sales/', include('sales.urls')),
     url(r'^payments/', include('payments.urls')),
     url(r'^pages/', include('pages.urls')),
+    url(r'^tellme/', include('tellme.urls')),
 ]
 
 

@@ -23,32 +23,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'o!mkzam-8_l*b)0m+fsx7-sbw)$3948h1$p0fvfsvoaa*ejcjb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ADMINS = (
     ("brainstien", "mintahkwabena13@gmail.com"),
 
 )
 
-ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
+# ALLOWED_HOSTS = []
 
-# # DOMAIN will be used in link generation specially in emails
-# DOMAIN = '127.0.0.1:8000'
-
-# # SITE_NAME it will be used in all pages, this is the name of your website
-# SITE_NAME = 'AGRAPP'
-
-# # SITE_TITLE for index pages of your website
-# SITE_TITLE = 'The powerful e-commerce solution for Agriculture'
-
-# # Meta description for SEO
-# SITE_DESCRIPTION = 'The e-commerce solution site build using python / Django'
-
-# # COPYRIGHT statement for all pages
-# COPYRIGHT = 'copyright &copy; 2018 AGRAPP. All rights reserved.'
-
-# # SUPPORT_EMAIL address for bugs and error reporting
-# SUPPORT_EMAIL = 'agrapp.market@gmail'
+ALLOWED_HOSTS = ['127.0.0.1']
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'agrapp.market@gmail.com'
@@ -69,7 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'storages',
+    'tellme',
     'agrapp',
     'geo',
     'pages',
@@ -181,9 +165,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Views to render page from agrapp.pages
@@ -191,22 +176,23 @@ PAGE_VIEWS = (('pages_base_page', 'Base View'),
               ('pages_products_page', 'Products View')
               )
 
+TELLME_FEEDBACK_EMAIL = 'agrapp.market@gmail.com'
 # django_heroku.settings(locals())
 
 # Heroku settings
-if os.getcwd() == '/app':
-    import dj_database_url
-    DATABASES = {
-        'default': dj_database_url.config(default='postgres://localhost')
-    }
-    # Honor the 'X-Forwarded-Proto' header for request.is_secure().
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    # Allow all host headers.
-    ALLOWED_HOSTS = ['*']
-    # Static asset configuration
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    STATIC_ROOT = 'staticfiles'
-    STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, 'static'),
-        '/var/www/static/',
-    )
+# if os.getcwd() == '/app':
+#     import dj_database_url
+#     DATABASES = {
+#         'default': dj_database_url.config(default='postgres://localhost')
+#     }
+#     # Honor the 'X-Forwarded-Proto' header for request.is_secure().
+#     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#     # Allow all host headers.
+#     ALLOWED_HOSTS = ['*']
+#     # Static asset configuration
+#     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+#     STATIC_ROOT = 'staticfiles'
+#     STATICFILES_DIRS = (
+#         os.path.join(BASE_DIR, 'static'),
+#         '/var/www/static/',
+#     )

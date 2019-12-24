@@ -25,6 +25,7 @@
 <link href="{% static 'agrapp/css/material-icons.css' %}" rel="stylesheet">
 <link href="{% static 'agrapp/css/fontawesome-all.min.css' %}" rel="stylesheet">
 <link href="{% static 'agrapp/css/products.css' %}" rel="stylesheet">
+ <link href="{% static 'tellme/feedback.min.css' %}" rel="stylesheet">
 {% endblock %}
 {% endblock %}
 
@@ -41,9 +42,9 @@
 		{% block header-menu %}
 		<ul class="navbar-nav  d-none d-lg-flex ml-auto">
 			{% block header-menu-list %}
-			<li class="nav-item ml-2 d-none d-lg-block">
+			<!-- <li class="nav-item ml-2 d-none d-lg-block">
 				<a class="btn btn-outline-dark border" href="#"><i class="fas fa-comment text-lightgrey mr-2"></i>Blog</a>
-			</li>
+			</li> -->
 			{% if user.is_authenticated %}
 			<li class="nav-item dropdown ml-1">
 				<button id="user-dropdown-menu" class="btn btn-light dropdown-toggle nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -126,12 +127,16 @@
 <main id="content" style="min-height: 50vh">
 	{% block content %}
 	{% endblock %}
+	<button type="button" id="feedback-btn" class="btn btn-info vertical-right-aligned">
+        Feedback <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+    </button>
 </main>
 <div class="sidebar-overlay"></div>
 {% block footer %}
 <footer class="mt-5 pt-4 my-md-5 pt-md-5 border-top container">
 	{% block footer-content %}
 	{% cache cache_timeout page-links %}
+	{% include 'tellme/js_inc.html' %}
   <div class="row">
     <div class="col-12 col-md">
       <img class="mb-2" src="{% static 'agrapp/img/logo-93x60.png' %}" alt="" width="50" height="50">
@@ -147,8 +152,9 @@
 </footer>
 {% endblock %}
 {% block scripts %}
-<script src="{% static 'agrapp/scripts/jquery.min.js' %}"></script>
+<script src="{% static 'agrapp/scripts/jquery-1.10.2.min.js' %}"></script>
 <script src="{% static 'agrapp/scripts/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'tellme/feedback.min.js' %}"></script>
 <script src="{% static 'agrapp/scripts/base.js' %}"></script>
 <script src="{% static 'agrapp/scripts/jquery-ajax.js' %}"></script>
 <script type="text/javascript">
